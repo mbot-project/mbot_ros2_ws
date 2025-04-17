@@ -1,0 +1,1 @@
+xacro is xml + macro, it can take multiple urdf files, put them together, and output to one single urdf file. What is good about this is that now we can seperate one big urdf to be multiple shorter ones, to make the models more organized.
