@@ -11,9 +11,9 @@ This is the workspace level, the `src` folder, which includes multiple packages.
 ```bash
 mkdir mbot_ws
 cd mbot_ws
-git clone https://github.com/sxy-sun/mbot_ros2_ws.git src
+git clone https://github.com/mbot-project/mbot_ros2_ws.git src
 # or
-gh repo clone sxy-sun/mbot_ros2_ws src
+gh repo clone mbot-project/mbot_ros2_ws src
 ```
 
 ```bash
@@ -37,24 +37,4 @@ colcon does out of source builds. By default it will create the following direct
 source install/setup.bash
 # below is the not recommended way
 # echo "source $PWD/install/setup.bash" >> ~/.bashrc
-```
-
-### Run Rviz
-```bash
-ros2 launch mbot_description rviz_launch.py
-```
-
-### Run Gazebo
-```bash
-ros2 launch mbot_description gazebo_launch.py
-```
-
-### Run LiDAR
-```bash
-ros2 launch sllidar_ros2 sllidar_a1_launch.py
-```
-
-### Run keyboard teleop
-```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
