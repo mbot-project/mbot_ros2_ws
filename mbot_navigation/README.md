@@ -1,3 +1,7 @@
+This ROS package utilizes slam_toolbox
+
 ```bash
-ros2 launch slam_toolbox online_async_launch.py slam_param_file:=src/mbot_navigation/config/mapper_params_online_async.yaml use_sim_time:=true
+ros2 launch mbot_navigation online_async_launch.py
 ```
+- The `online_async_launch.py` file is here: `mbot_navigation/launch/online_async_launch.py`
+- The launch file use the config file under the `mbot_navigation/config`
