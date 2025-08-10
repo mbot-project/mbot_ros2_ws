@@ -7,7 +7,7 @@
   </material>
 
   <material name="blue">
-      <color rgba="0.0 0.0 0.8 1.0"/>
+      <color rgba="0.07 0.08 0.7 1.0"/>
   </material>
 
   <material name="yellow">
@@ -34,6 +34,7 @@
     <visual>
       <geometry> 
         <box size="0.17 0.13 0.005"/>
+        <!-- <mesh filename="package://mbot_description/meshes/base.dae" scale="0.001 0.001 0.001"/> -->
       </geometry>
       <origin rpy="0 0 0" xyz="-0.038 0 -0.0115"/>
       <material name="blue"/>
@@ -67,9 +68,10 @@
   <link name="top_link">
     <visual>
       <geometry>
-        <box size="0.144 0.13 0.005"/>
+        <!-- <box size="0.144 0.13 0.005"/> -->
+        <mesh filename="package://mbot_description/meshes/top.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="-0.025 0 0"/>
+      <origin rpy="0 0 3.14" xyz="0 0 0"/>
       <material name="blue"/>
     </visual>
     <collision>
@@ -96,10 +98,10 @@
   <link name="camera_link">
     <visual>
       <geometry>
-        <box size="0.005 0.05 0.05"/>
+        <mesh filename="package://mbot_description/meshes/camera-set.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <material name="green"/>
+      <!-- <material name="green"/> -->
     </visual>
     <collision>
       <geometry>
@@ -119,7 +121,7 @@
   <link name="left_wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="0.042" length="0.024"/>
+        <mesh filename="package://mbot_description/meshes/wheel_l.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="black"/>
@@ -130,13 +132,11 @@
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
-    
-  </link>
-
+      </link>
   <link name="right_wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="0.042" length="0.024"/>
+        <mesh filename="package://mbot_description/meshes/wheel_r.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="black"/>
@@ -169,9 +169,10 @@
   <link name="lidar_link">
     <visual>
       <geometry>
-        <cylinder radius="0.0336" length="0.022"/>
+        <!-- <cylinder radius="0.0336" length="0.022"/> -->
+        <mesh filename="package://mbot_description/meshes/lidar.dae" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.04375"/>
       <material name="black"/>
     </visual>
     <collision>
