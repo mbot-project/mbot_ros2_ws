@@ -1,23 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mbot">
-
-  <!-- Init colour -->
-  <material name="black">
-      <color rgba="0.2 0.2 0.2 1.0"/>
-  </material>
-
-  <material name="blue">
-      <color rgba="0.07 0.08 0.7 1.0"/>
-  </material>
-
-  <material name="yellow">
-      <color rgba="0.8 0.8 0.0 1.0"/>
-  </material>
-
-  <material name="green">
-      <color rgba="0.0 0.8 0.0 1.0"/>
-  </material>
-
+<material name="black">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+</material>
 <!-- ===================== MAIN BODY =========================== -->
 
   <link name="base_footprint"/>
@@ -33,83 +18,21 @@
   <link name="base_link">
     <visual>
       <geometry> 
-        <box size="0.17 0.13 0.005"/>
-        <!-- <mesh filename="package://mbot_description/meshes/base.dae" scale="0.001 0.001 0.001"/> -->
+        <mesh filename="package://mbot_description/meshes/mbot-classic-simplied.dae"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="-0.038 0 -0.0115"/>
-      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="-0.04 -0.115 0.005"/>
     </visual>
     <collision>
       <geometry> 
         <box size="0.18 0.13 0.095"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="-0.038 0 -0.0115"/>
-    </collision>
-    
-  </link>
-
-  <!-- MIDDLE AND TOP LAYERS -->
-  <link name="middle_link">
-    <visual>
-      <geometry>
-        <box size="0.144 0.13 0.005"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="-0.025 0 0"/>
-      <material name="yellow"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.144 0.13 0.005"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="-0.025 0 0"/>
+      <origin rpy="0 0 0" xyz="-0.04 -0.115 0.005"/>
     </collision>
   </link>
 
-  <link name="top_link">
-    <visual>
-      <geometry>
-        <!-- <box size="0.144 0.13 0.005"/> -->
-        <mesh filename="package://mbot_description/meshes/top.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.14" xyz="0 0 0"/>
-      <material name="blue"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.144 0.13 0.005"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="-0.025 0 0"/>
-    </collision>
-  </link>
 
-  <joint name="middle_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="middle_link"/>
-    <origin xyz="0 0 0.02936" rpy="0 0 0"/>
-  </joint>
-
-  <joint name="top_joint" type="fixed">
-    <parent link="middle_link"/>
-    <child link="top_link"/>
-    <origin xyz="0 0 0.067" rpy="0 0 0"/>
-  </joint>
-
-  <!-- CAMERA on middle layer -->
-  <link name="camera_link">
-    <visual>
-      <geometry>
-        <mesh filename="package://mbot_description/meshes/camera-set.dae" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <!-- <material name="green"/> -->
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.005 0.05 0.05"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-    </collision>
-  </link>
+  <!-- CAMERA -->
+  <link name="camera_link"/>
 
   <joint name="camera_joint" type="fixed">
     <parent link="base_link"/>
@@ -123,14 +46,14 @@
       <geometry>
         <mesh filename="package://mbot_description/meshes/wheel_l.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
       <material name="black"/>
     </visual>
     <collision>
       <geometry>
         <cylinder radius="0.042" length="0.024"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
     </collision>
       </link>
   <link name="right_wheel_link">
@@ -138,14 +61,14 @@
       <geometry>
         <mesh filename="package://mbot_description/meshes/wheel_r.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
       <material name="black"/>
     </visual>
     <collision>
       <geometry>
         <cylinder radius="0.042" length="0.024"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
     </collision>
     
   </link>
@@ -166,23 +89,7 @@
 
 
   <!-- RPLidar A1 (Directly above base_link) -->
-  <link name="lidar_link">
-    <visual>
-      <geometry>
-        <!-- <cylinder radius="0.0336" length="0.022"/> -->
-        <mesh filename="package://mbot_description/meshes/lidar.dae" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 -0.04375"/>
-      <material name="black"/>
-    </visual>
-    <collision>
-      <geometry>
-        <cylinder radius="0.0336" length="0.022"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-    </collision>
-    
-  </link>
+  <link name="lidar_link"/>
 
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
