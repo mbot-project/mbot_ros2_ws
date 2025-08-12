@@ -1,51 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mbot">
-
-  <!-- Include Gazebo control -->
-  <xacro:include filename="$(find mbot_description)/urdf/mbot.gazebo"/>
-
-  <!-- Init colour -->
-  <material name="black">
-      <color rgba="0.2 0.2 0.2 1.0"/>
-  </material>
-
-  <material name="blue">
-      <color rgba="0.0 0.0 0.8 1.0"/>
-  </material>
-
-  <!-- Specify some standard inertial calculations https://en.wikipedia.org/wiki/List_of_moments_of_inertia -->
-  <!-- These make use of xacro's mathematical functionality -->
-
-  <xacro:macro name="inertial_sphere" params="mass radius *origin">
-      <inertial>
-          <xacro:insert_block name="origin"/>
-          <mass value="${mass}" />
-          <inertia ixx="${(2/5) * mass * (radius*radius)}" ixy="0.0" ixz="0.0"
-                  iyy="${(2/5) * mass * (radius*radius)}" iyz="0.0"
-                  izz="${(2/5) * mass * (radius*radius)}" />
-      </inertial>
-  </xacro:macro>  
-
-  <xacro:macro name="inertial_box" params="mass x y z *origin">
-      <inertial>
-          <xacro:insert_block name="origin"/>
-          <mass value="${mass}" />
-          <inertia ixx="${(1/12) * mass * (y*y+z*z)}" ixy="0.0" ixz="0.0"
-                  iyy="${(1/12) * mass * (x*x+z*z)}" iyz="0.0"
-                  izz="${(1/12) * mass * (x*x+y*y)}" />
-      </inertial>
-  </xacro:macro>
-
-  <xacro:macro name="inertial_cylinder" params="mass length radius *origin">
-      <inertial>
-          <xacro:insert_block name="origin"/>
-          <mass value="${mass}" />
-          <inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
-                  iyy="${(1/12) * mass * (3*radius*radius + length*length)}" iyz="0.0"
-                  izz="${(1/2) * mass * (radius*radius)}" />
-      </inertial>
-  </xacro:macro>
-
+<material name="black">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+</material>
 <!-- ===================== MAIN BODY =========================== -->
 
   <link name="base_footprint"/>
@@ -54,66 +11,66 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz="0 0 0.041" rpy="0 0 0"/>
+    <origin xyz="0 0 0.042" rpy="0 0 0"/>
   </joint>
 
   <!-- CHASSIS -->
   <link name="base_link">
     <visual>
       <geometry> 
-        <box size="0.18 0.13 0.095"/>
+        <mesh filename="package://mbot_description/meshes/mbot-classic-simplied.dae"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="-0.045 0 0.0275"/>
-      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="-0.04 -0.115 0.005"/>
     </visual>
     <collision>
       <geometry> 
         <box size="0.18 0.13 0.095"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="-0.045 0 0.0275"/>
+      <origin rpy="0 0 0" xyz="-0.04 -0.115 0.005"/>
     </collision>
-    <xacro:inertial_box mass="0.3" x="0.18" y="0.13" z="0.095">
-      <origin xyz="0 0 0.0275" rpy="0 0 0"/>
-    </xacro:inertial_box>
   </link>
+
+
+  <!-- CAMERA -->
+  <link name="camera_link"/>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.05751 0 0.02936" rpy="0 0 0"/>
+  </joint>
 
   <!-- WHEELS -->
   <link name="left_wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="0.041" length="0.02"/>
+        <mesh filename="package://mbot_description/meshes/wheel_l.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
       <material name="black"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.041" length="0.02"/>
+        <cylinder radius="0.042" length="0.024"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
     </collision>
-    <xacro:inertial_cylinder mass="0.1" length="0.02" radius="0.041">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:inertial_cylinder>
-  </link>
-
+      </link>
   <link name="right_wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="0.041" length="0.02"/>
+        <mesh filename="package://mbot_description/meshes/wheel_r.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
       <material name="black"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.041" length="0.02"/>
+        <cylinder radius="0.042" length="0.024"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0115"/>
     </collision>
-    <xacro:inertial_cylinder mass="0.1" length="0.02" radius="0.041">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:inertial_cylinder>
+    
   </link>
 
   <joint name="left_wheel_joint" type="continuous">
@@ -121,8 +78,6 @@
     <child link="left_wheel_link"/>
     <origin xyz="0 0.085 0" rpy="-1.5708 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="5000" velocity="10"/>
-    <dynamics damping="1.0" friction="1.0"/>
   </joint>
 
   <joint name="right_wheel_joint" type="continuous">
@@ -130,59 +85,16 @@
     <child link="right_wheel_link"/>
     <origin xyz="0 -0.085 0" rpy="1.5708 0 0"/>
     <axis xyz="0 0 -1"/>
-    <limit effort="5000" velocity="10"/>
-    <dynamics damping="1.0" friction="1.0"/>
   </joint>
 
-  <!-- CASTER (Support ball that can roll freely) -->
-  <!-- Set to fixed joint but also set friction to 0 -->
-  <joint name="caster_wheel_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="caster_wheel_link"/>
-    <origin xyz="-0.09 0 0"/>
-  </joint>
-
-  <link name="caster_wheel_link">
-    <visual>
-      <geometry>
-        <sphere radius="0.041"/>
-      </geometry>
-      <material name="black"/>
-    </visual>
-    <collision>
-      <geometry>
-        <sphere radius="0.041"/>
-      </geometry>
-    </collision>
-    <xacro:inertial_sphere mass="0.1" radius="0.041">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:inertial_sphere>
-  </link>
 
   <!-- RPLidar A1 (Directly above base_link) -->
-  <link name="lidar_link">
-    <visual>
-      <geometry>
-        <cylinder radius="0.049" length="0.041"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <material name="black"/>
-    </visual>
-    <collision>
-      <geometry>
-        <cylinder radius="0.049" length="0.041"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-    </collision>
-    <xacro:inertial_cylinder mass="0.1" length="0.041" radius="0.049">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:inertial_cylinder>
-  </link>
+  <link name="lidar_link"/>
 
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="0 0 0.1" rpy="0 0 3.14"/>
+    <origin xyz="0 0 0.14179" rpy="0 0 3.14"/>
   </joint>
 
 </robot>
