@@ -1,9 +1,9 @@
 # mbot_ros2_ws
-> mbot - ROS2 Jazzy - Ubuntu 24.04 - Gazebo Harmonic
+> mbot - ROS2 Jazzy - Ubuntu 24.04
 
-This is the workspace level, the `src` folder, which includes multiple packages.
-
-### To get started:
+## To get started
+### Clone the repository
+This repository should be the `src` folder of the ROS2 workspace. So first we create the workspace `mbot_ws`. Then clone this repo as `src`.
 ```bash
 mkdir mbot_ws
 cd mbot_ws
@@ -25,8 +25,45 @@ source /opt/ros/jazzy/setup.bash
 cd ~/mbot_ws
 colcon build --symlink-install
 echo "source $PWD/install/local_setup.bash" >> ~/.bashrc
+source install/local_setup.bash
 ```
-colcon does out of source builds. By default it will create the following directories as peers of the `src` directory:
+By default this will create the following directories as peers of the `src` directory:
 - The `build` directory will be where intermediate files are stored. For each package a subfolder will be created in which e.g. CMake is being invoked.
 - The `install` directory is where each package will be installed to. By default each package will be installed into a separate subdirectory.
 - The `log` directory contains various logging information about each colcon invocation.
+
+### Launch
+#### sllidar_ros2
+- ROS LiDAR driver
+- To launch the lidar
+    ```bash
+    ros2 launch sllidar_ros2 sllidar_a1_launch.py frame_id:=lidar_link 
+    ```
+    - This will publish the topic `/scan`
+#### mbot_description
+- This is where we store urdf files.
+- To launch the robot model and tf frames, and visualize it in the Rviz
+    ```bash
+    ros2 launch mbot_description rviz_launch.py
+    ```
+    - If you have launched the lidar, you can also visualize lidar scan on Rviz
+
+#### mbot_navigation
+- ROS package consists of slam_toolbox and nav2
+- To launch slam_toolbox with mbot tailored config:
+    ```bash
+    ros2 launch mbot_navigation online_async_launch.py
+    ```
+    - This will publish the topic `/map`
+
+### Test
+To test the mapping feature, you can drive the robot using keyboard:
+```bash
+# Run teleop node to drive robot
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+### Other packages
+#### mbot_interfaces
+- Where mbot custom messages and services are defined.
+- The messages defined here are used on both Pi5 and Pico.

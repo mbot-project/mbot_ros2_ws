@@ -1,5 +1,7 @@
-This ROS package utilizes slam_toolbox
+# mbot_navigation
+This ROS package utilizes slam_toolbox and nav2
 
+### Launch SLAM
 ```bash
 ros2 launch mbot_navigation online_async_launch.py
 ```
