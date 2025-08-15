@@ -37,7 +37,7 @@
   <joint name="camera_joint" type="fixed">
     <parent link="base_link"/>
     <child link="camera"/>
-    <origin xyz="0.05751 0 0.02936" rpy="3.14 -1.57 0"/>
+    <origin xyz="0.05751 0 0.02936" rpy="-1.57 0 -1.57"/>
   </joint>
 
   <!-- WHEELS -->
