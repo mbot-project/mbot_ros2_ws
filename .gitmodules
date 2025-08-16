@@ -1,3 +1,6 @@
 [submodule "sllidar_ros2"]
 	path = sllidar_ros2
 	url = https://github.com/Slamtec/sllidar_ros2.git
+[submodule "camera_ros"]
+	path = camera_ros
+	url = https://github.com/christianrauch/camera_ros.git
