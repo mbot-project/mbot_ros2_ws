@@ -1,0 +1,7 @@
+camera:
+  ros__parameters:
+    orientation: 180
+    width: 640
+    height: 480
+    format: "BGR888"
+    camera_info_url: "package://mbot_vision/calibration/ost.yaml"
