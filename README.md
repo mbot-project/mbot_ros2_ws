@@ -56,6 +56,25 @@ By default this will create the following directories as peers of the `src` dire
     ```
     - This will publish the topic `/map`
 
+#### mbot_vision
+- ROS package for camera interface, image rectification, and AprilTag detection
+- To launch camera only:
+    ```bash
+    ros2 launch mbot_vision camera.launch.py
+    ```
+    - This will publish topics `/camera/image_raw` and `/camera/camera_info`
+- To launch camera with image rectification:
+    ```bash
+    ros2 launch mbot_vision camera_rectify.launch.py
+    ```
+    - This will also publish the topic `/image_rect`
+- To launch full vision pipeline (camera + rectification + AprilTag detection):
+    ```bash
+    ros2 launch mbot_vision apriltag.launch.py
+    ```
+    - This will also publish AprilTag detection results on `/detections`
+
+
 ### Test
 To test the mapping feature, you can drive the robot using keyboard:
 ```bash
