@@ -9,11 +9,15 @@ mkdir mbot_ws
 cd mbot_ws
 git clone --recurse-submodules https://github.com/mbot-project/mbot_ros2_ws.git src
 ```
-or for `gh` users:
+**OR** if you are using `gh`:
 ```bash
+mkdir mbot_ws
+cd mbot_ws
 gh repo clone mbot-project/mbot_ros2_ws src
 git submodule update --init --recursive
 ```
+
+Then source the setup file:
 ```bash
 echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 echo "export ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST" >> ~/.bashrc
@@ -23,6 +27,7 @@ echo "export ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST" >> ~/.bashrc
 ```bash
 source /opt/ros/jazzy/setup.bash
 cd ~/mbot_ws
+rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO --skip-keys=libcamera
 colcon build --symlink-install
 echo "source $PWD/install/local_setup.bash" >> ~/.bashrc
 source install/local_setup.bash
