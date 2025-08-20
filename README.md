@@ -55,11 +55,15 @@ By default this will create the following directories as peers of the `src` dire
 
 #### mbot_navigation
 - ROS package consists of slam_toolbox and nav2
-- To launch slam_toolbox with mbot tailored config:
+- To launch slam_toolbox mapping with mbot tailored config:
     ```bash
-    ros2 launch mbot_navigation online_async_launch.py
+    ros2 launch mbot_navigation slam_toolbox_online_async_launch.py
     ```
     - This will publish the topic `/map`
+- To launch localization with map:
+    - TODO
+- To launch nav2 to nagivate:
+    - TODO
 
 #### mbot_vision
 - ROS package for camera interface, image rectification, and AprilTag detection
