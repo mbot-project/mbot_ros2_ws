@@ -37,21 +37,25 @@ By default this will create the following directories as peers of the `src` dire
 - The `install` directory is where each package will be installed to. By default each package will be installed into a separate subdirectory.
 - The `log` directory contains various logging information about each colcon invocation.
 
-### Launch
+## Launch
+### Bring up the mbot
+```bash
+ros2 launch mbot_bringup mbot_bringup.launch.py 
+```
+- This will bring up the lidar driver, the robot description for visualization, and the tf tree.
+
+### Launch individual packages
+> Only use the commands below if you know what they do.
 #### sllidar_ros2
 - ROS LiDAR driver
-- To launch the lidar
     ```bash
     ros2 launch sllidar_ros2 sllidar_a1_launch.py frame_id:=lidar_link 
     ```
     - This will publish the topic `/scan`
+
 #### mbot_description
-- This is where we store urdf files.
-- To launch the robot model and tf frames, and visualize it in the Rviz
-    ```bash
-    ros2 launch mbot_description rviz_launch.py
-    ```
-    - If you have launched the lidar, you can also visualize lidar scan on Rviz
+- ROS package of the URDF model
+- Please check the README file under /mbot_description for use details.
 
 #### mbot_navigation
 - ROS package consists of slam_toolbox and nav2
@@ -59,6 +63,7 @@ By default this will create the following directories as peers of the `src` dire
 
 #### mbot_vision
 - ROS package for camera interface, image rectification, and AprilTag detection
+- Please check the README file under /mbot_vision for use details.
 - To launch camera only:
     ```bash
     ros2 launch mbot_vision camera.launch.py
