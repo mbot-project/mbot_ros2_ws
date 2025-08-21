@@ -1,4 +1,6 @@
 # mbot_vision
+ROS package for camera interface, image rectification, and AprilTag detection
+
 This is for ROS Mbot use.
 
 ## Verify camera

@@ -52,27 +52,12 @@ Run the following line **on NoMachine**:
 ```bash
 ros2 launch mbot_bringup mbot_viz.launch.py
 ```
-### Mapping
-```bash
-ros2 launch mbot_bringup mbot_bringup.launch.py 
-```
-Run the following command **on NoMachine**
-```bash
-ros2 launch mbot_navigation slam_toolbox_online_async_launch.py
-```
-- `slam_toolbox_online_async_launch.py` will also bring up the rviz showing the mapping process
 
-Run teleop node to drive robot to explore the area
-```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
+### SLAM and Navigation
+Please check the README file under mbot_navigation.
 
-
-### Localization
-TODO
-
-### Navigation
-TODO
+### Computer Vision
+Please check the README file under mbot_vision.
 
 ## Individual packages
 #### sllidar_ros2
@@ -80,16 +65,6 @@ ROS LiDAR driver - This will publish the topic `/scan`
 ```bash
 ros2 launch sllidar_ros2 sllidar_a1_launch.py frame_id:=lidar_link 
 ```
-
-
-#### mbot_navigation
-- ROS package consists of slam_toolbox and nav2
-- Please check the README file under /mbot_navigation for use details.
-
-#### mbot_vision
-- ROS package for camera interface, image rectification, and AprilTag detection
-- Please check the README file under /mbot_vision for use details.
-
 #### mbot_interfaces
 - Where mbot custom messages and services are defined.
 - The messages defined here are used on both Pi5 and Pico.
