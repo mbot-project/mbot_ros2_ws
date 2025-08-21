@@ -10,27 +10,24 @@ ros2 launch mbot_navigation slam_toolbox_online_async_launch.py
 - Launch file: `mbot_navigation/launch/slam_toolbox_online_async_launch.py`
 - Uses parameters from `mbot_navigation/config/slam_toolbox_online_async.yaml`
 - Drive the robot until the map in RViz is complete.
-```bash
-# Run teleop node to drive robot
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
-### Save map
-- Method 1: Using the RViz Plugin: Go to Panels → Add New Panel → SlamToolbox Plugin
-- Method 2: Nav2 map saver 
     ```bash
-    cd ~/mbot_ws/src/mbot_navigation/maps
-    ros2 run nav2_map_server map_saver_cli -f my_map_name
+    # Run teleop node to drive robot
+    ros2 run teleop_twist_keyboard teleop_twist_keyboard
     ```
-    - Don't include any file extension.
-  
+### Save map
+```bash
+cd ~/mbot_ws/src/mbot_navigation/maps
+ros2 run nav2_map_server map_saver_cli -f my_map_name
+```
+- Don't include any file extension.
+- Always save it under `/maps` folder!!! Or you cannot use proviced launch files later.
+
 ### Visualize the map
 ```bash
-# Terminal 1: Start map server with your map
-TODO
+ros2 launch mbot_navigation view_map.launch.py map_name:=your_map
 ```
-Then in RViz:
-- Change Fixed Frame to map
-- Add Map display from /map topic
+- This launch file only does one thing, visualize your saved map.
+- Remember do now include file extention in the command, just file name.
 
 ### Localization
 ```bash
