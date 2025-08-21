@@ -44,18 +44,43 @@ ros2 launch mbot_bringup mbot_bringup.launch.py
 ```
 - This will bring up the lidar driver, the robot description for visualization, and the tf tree.
 
-### Launch individual packages
-> Only use the commands below if you know what they do.
-#### sllidar_ros2
-- ROS LiDAR driver
-    ```bash
-    ros2 launch sllidar_ros2 sllidar_a1_launch.py frame_id:=lidar_link 
-    ```
-    - This will publish the topic `/scan`
+### Visualize the robot model
+```bash
+ros2 launch mbot_bringup mbot_bringup.launch.py 
+```
+Run the following line **on NoMachine**:
+```bash
+ros2 launch mbot_bringup mbot_viz.launch.py
+```
+### Mapping
+```bash
+ros2 launch mbot_bringup mbot_bringup.launch.py 
+```
+Run the following command **on NoMachine**
+```bash
+ros2 launch mbot_navigation slam_toolbox_online_async_launch.py
+```
+- `slam_toolbox_online_async_launch.py` will also bring up the rviz showing the mapping process
 
-#### mbot_description
-- ROS package of the URDF model
-- Please check the README file under /mbot_description for use details.
+Run teleop node to drive robot to explore the area
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+
+### Localization
+TODO
+
+### Navigation
+TODO
+
+## Individual packages
+#### sllidar_ros2
+ROS LiDAR driver - This will publish the topic `/scan`
+```bash
+ros2 launch sllidar_ros2 sllidar_a1_launch.py frame_id:=lidar_link 
+```
+
 
 #### mbot_navigation
 - ROS package consists of slam_toolbox and nav2
@@ -64,31 +89,10 @@ ros2 launch mbot_bringup mbot_bringup.launch.py
 #### mbot_vision
 - ROS package for camera interface, image rectification, and AprilTag detection
 - Please check the README file under /mbot_vision for use details.
-- To launch camera only:
-    ```bash
-    ros2 launch mbot_vision camera.launch.py
-    ```
-    - This will publish topics `/camera/image_raw` and `/camera/camera_info`
-- To launch camera with image rectification:
-    ```bash
-    ros2 launch mbot_vision camera_rectify.launch.py
-    ```
-    - This will also publish the topic `/image_rect`
-- To launch full vision pipeline (camera + rectification + AprilTag detection):
-    ```bash
-    ros2 launch mbot_vision apriltag.launch.py
-    ```
-    - This will also publish AprilTag detection results on `/detections`
 
-
-### Test
-To test the mapping feature, you can drive the robot using keyboard:
-```bash
-# Run teleop node to drive robot
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
-
-### Other packages
 #### mbot_interfaces
 - Where mbot custom messages and services are defined.
 - The messages defined here are used on both Pi5 and Pico.
+
+#### mbot_description
+- ROS package of the URDF model
