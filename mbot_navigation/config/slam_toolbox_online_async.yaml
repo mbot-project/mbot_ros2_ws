@@ -7,7 +7,7 @@ slam_toolbox:
     ceres_preconditioner: SCHUR_JACOBI
     ceres_trust_strategy: LEVENBERG_MARQUARDT
     ceres_dogleg_type: TRADITIONAL_DOGLEG
-    ceres_loss_function: None
+    ceres_loss_function: Huber
 
     # ROS Parameters
     odom_frame: odom
@@ -27,9 +27,9 @@ slam_toolbox:
     debug_logging: false
     throttle_scans: 1
     transform_publish_period: 0.02 #if 0 never publishes odometry
-    map_update_interval: 1.0
-    resolution: 0.02
-    max_laser_range: 20.0 #for rastering images
+    map_update_interval: 2.0
+    resolution: 0.05
+    max_laser_range: 8.0 #for rastering images
     minimum_time_interval: 0.5
     transform_timeout: 0.2
     tf_buffer_duration: 30.0
@@ -39,7 +39,7 @@ slam_toolbox:
     # General Parameters
     use_scan_matching: true
     use_scan_barycenter: true
-    minimum_travel_distance: 0.3
+    minimum_travel_distance: 0.2
     minimum_travel_heading: 0.3
     scan_buffer_size: 15
     scan_buffer_maximum_scan_distance: 12.0

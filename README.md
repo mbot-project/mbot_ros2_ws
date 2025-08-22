@@ -43,6 +43,7 @@ By default this will create the following directories as peers of the `src` dire
 ros2 launch mbot_bringup mbot_bringup.launch.py 
 ```
 - This will bring up the lidar driver, the robot description for visualization, and the tf tree.
+- **This command will not launch rviz.**
 
 ### Visualize the robot model
 ```bash

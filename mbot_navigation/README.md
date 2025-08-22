@@ -24,7 +24,11 @@ ros2 run nav2_map_server map_saver_cli -f my_map_name
 ```
 - Don't include any file extension.
 - Always save it under `/maps` folder!!! Or you cannot use proviced launch files later.
-
+```bash
+cd ~/mbot_ws
+colcon build
+```
+- Remember to compile all the packages so the map become available anywhere.
 ## Visualize the map
 ```bash
 ros2 launch mbot_navigation view_map.launch.py map_name:=your_map
@@ -41,9 +45,11 @@ Run the following command **on NoMachine**
 ```bash
 ros2 launch mbot_navigation localization_launch.py map_name:=your_map_name
 ```
-Then on Rviz:
+- Once the rviz show up, you will find that the robot model is blank, and there are errors. That is because there is no map -> odom -> base_footprint transform relation yet. Follow the steps below.
+
+On Rviz:
 1. Set the Initial Pose. Click the "2D Pose Estimate" button in the RViz toolbar. On the map, click and drag an arrow to represent where your robot is in the real world and which way it's facing.
-2. Release the mouse button. You should see the Lidar scans (the red dots) "snap" into place, aligning with the map walls. AMCL's particle cloud should converge around the robot's true location.
+2. Release the mouse button. You should see the Lidar scans (the red dots) "snap" into place, aligning with the map walls. You don't have to keep adjusting it perfectly. One good initial guess is enough. Use the teleop node to rotate the robot in place a little bit, or drive it forward and back a short distance. AMCL's particle cloud should converge around the robot's true location.
 3. Test It! Manually drive your robot around. As you do, watch its position in RViz. It should move in perfect sync with the real robot, with its Lidar scans staying aligned with the map's walls.
     ```bash
     ros2 run teleop_twist_keyboard teleop_twist_keyboard
