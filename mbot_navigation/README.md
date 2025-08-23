@@ -54,7 +54,24 @@ On Rviz:
     ```bash
     ros2 run teleop_twist_keyboard teleop_twist_keyboard
     ```
-### Navigation
-```bash
+## Navigation
 TODO
+
+**1. Bring up the mbot and the navigation node**
+```bash
+ros2 launch mbot_bringup mbot_bringup.launch.py 
 ```
+Run the following command **on NoMachine**
+```bash
+ros2 launch mbot_navigation navigation_launch.py map_name:=your_map_name
+```
+**2. Localize the Robot**
+Once RViz appears, you must first localize the robot.
+- Set the initial pose using the "2D Pose Estimate" button.
+- Drive the robot around a little with the `teleop_twist_keyboard` to ensure the laser scan is well-aligned with the map and the pose is stable.
+
+**3. Set a Navigation Goal**
+After the robot is localized, you can give it a navigation goal.
+- Click the "2D Goal Pose" button in the RViz toolbar.
+- Click on a destination on the map and drag an arrow to specify the desired final orientation.
+- When you release the mouse button, the robot will begin planning a path and navigating to the goal, avoiding obstacles along the way.
