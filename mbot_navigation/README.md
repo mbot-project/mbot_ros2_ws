@@ -29,6 +29,7 @@ cd ~/mbot_ws
 colcon build
 ```
 - Remember to compile all the packages so the map become available anywhere.
+- **Changes to the config files also require re-compile.**
 ## Visualize the map
 ```bash
 ros2 launch mbot_navigation view_map.launch.py map_name:=your_map

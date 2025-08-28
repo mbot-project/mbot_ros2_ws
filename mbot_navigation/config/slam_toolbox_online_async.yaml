@@ -26,10 +26,10 @@ slam_toolbox:
 
     debug_logging: false
     throttle_scans: 1
-    transform_publish_period: 0.02 #if 0 never publishes odometry
-    map_update_interval: 2.0
-    resolution: 0.02
-    max_laser_range: 8.0 #for rastering images
+    transform_publish_period: 0.05 #if 0 never publishes odometry
+    map_update_interval: 1.0
+    resolution: 0.01
+    max_laser_range: 3.0 #for rastering images
     minimum_time_interval: 0.5
     transform_timeout: 0.2
     tf_buffer_duration: 30.0
@@ -39,13 +39,13 @@ slam_toolbox:
     # General Parameters
     use_scan_matching: true
     use_scan_barycenter: true
-    minimum_travel_distance: 0.2
-    minimum_travel_heading: 0.3
+    minimum_travel_distance: 0.1
+    minimum_travel_heading: 0.2
     scan_buffer_size: 15
-    scan_buffer_maximum_scan_distance: 12.0
+    scan_buffer_maximum_scan_distance: 3.0
     link_match_minimum_response_fine: 0.1  
     link_scan_maximum_distance: 1.0
-    loop_search_maximum_distance: 2.0
+    loop_search_maximum_distance: 1.5
     do_loop_closing: true 
     loop_match_minimum_chain_size: 6           
     loop_match_maximum_variance_coarse: 3.0  
@@ -53,12 +53,12 @@ slam_toolbox:
     loop_match_minimum_response_fine: 0.45
 
     # Correlation Parameters - Correlation Parameters
-    correlation_search_space_dimension: 0.3
-    correlation_search_space_resolution: 0.01
-    correlation_search_space_smear_deviation: 0.1 
+    correlation_search_space_dimension: 0.2
+    correlation_search_space_resolution: 0.005
+    correlation_search_space_smear_deviation: 0.05
 
     # Correlation Parameters - Loop Closure Parameters
-    loop_search_space_dimension: 4.0
+    loop_search_space_dimension: 2.0
     loop_search_space_resolution: 0.05
     loop_search_space_smear_deviation: 0.03
 
