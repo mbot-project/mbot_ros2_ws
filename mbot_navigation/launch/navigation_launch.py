@@ -10,7 +10,7 @@ def generate_launch_description():
     # -----  File Paths -----
     pkg_share = get_package_share_directory('mbot_navigation')
     nav2_params_file = os.path.join(pkg_share, 'config', 'nav2_params.yaml')
-    rviz_config_file = os.path.join(pkg_share, 'rviz', 'localization.rviz')
+    rviz_config_file = os.path.join(pkg_share, 'rviz', 'navigation.rviz')
 
     return LaunchDescription([
         # -----  Launch Arguments -----
