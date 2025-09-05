@@ -54,20 +54,20 @@ amcl:
 local_costmap:
   local_costmap:
     ros__parameters:
-      update_frequency: 5.0
-      publish_frequency: 2.0
+      update_frequency: 10.0
+      publish_frequency: 5.0
       global_frame: odom
       robot_base_frame: base_footprint
       rolling_window: true
       width: 3 # in meter
       height: 3
       resolution: 0.01
-      robot_radius: 0.07786
+      robot_radius: 0.09
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 4.0
-        inflation_radius: 0.1
+        cost_scaling_factor: 8.0
+        inflation_radius: 0.25
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -98,7 +98,7 @@ global_costmap:
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_footprint
-      robot_radius: 0.07786
+      robot_radius: 0.09
       resolution: 0.05
       track_unknown_space: true
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
@@ -121,21 +121,20 @@ global_costmap:
         map_subscribe_transient_local: True
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 4.0
-        inflation_radius: 0.1
+        cost_scaling_factor: 8.0
+        inflation_radius: 0.25
       always_send_full_costmap: True
 
 planner_server:
   ros__parameters:
-    expected_planner_frequency: 10.0
+    expected_planner_frequency: 20.0
     planner_plugins: ["GridBased"]
     costmap_update_timeout: 5.0
     GridBased:
-      plugin: "nav2_theta_star_planner::ThetaStarPlanner"
+      plugin: "nav2_theta_star_planner::ThetaStarPlanner" 
       how_many_corners: 8          # Number of corners to check
       w_euc_cost: 1.0             # Euclidean cost weight
       w_traversal_cost: 5.0       # Traversal cost weight (higher = avoid obstacles more)
-      w_heuristic_cost: 1.0       # Heuristic cost weight
 
 controller_server:
   ros__parameters:
@@ -163,26 +162,26 @@ controller_server:
       plugin: "nav2_graceful_controller::GracefulController"
       
       # Motion Limits
-      max_linear_vel: 0.3
+      max_linear_vel: 0.25
       min_linear_vel: -0.2
       max_angular_vel: 1.0
-      max_linear_accel: 0.3
+      max_linear_accel: 0.2
       max_angular_accel: 2.0
       
       # Path Following
       lookahead_dist: 0.3          # Distance to look ahead on path
-      lookahead_time: 1.2          # Time to look ahead
+      lookahead_time: 1.0          # Time to look ahead
       min_lookahead_dist: 0.15     # Minimum lookahead distance
-      max_lookahead_dist: 0.6      # Maximum lookahead distance
+      max_lookahead_dist: 0.5      # Maximum lookahead distance
       
       # Rotation behavior
-      rotation_scaling_factor: 0.8  # How aggressively to rotate towards path
-      path_distance_bias: 1.2      # Preference for staying close to path
-      goal_distance_bias: 2.0      # Preference for moving towards goal
+      rotation_scaling_factor: 1.2 # How aggressively to rotate towards path
+      path_distance_bias: 3.0      # Preference for staying close to path
+      goal_distance_bias: 0.8     # Preference for moving towards goal
       
       # Obstacle avoidance
       forward_point_distance: 0.325  # Point ahead of robot to check for collisions
-      
+    
       # Speed scaling
       speed_limit_tolerance: 0.02
       speed_scaling_factor: 0.8
@@ -202,7 +201,7 @@ controller_server:
       use_cost_regulated_linear_velocity_scaling: false
       cost_scaling_dist: 0.3
       cost_scaling_gain: 1.0
-      inflation_cost_scaling_factor: 3.0
+      inflation_cost_scaling_factor: 6.0
       
       # Debug
       publish_transformed_plan: true

@@ -56,8 +56,6 @@ On Rviz:
     ros2 run teleop_twist_keyboard teleop_twist_keyboard
     ```
 ## Navigation
-TODO
-
 **1. Bring up the mbot and the navigation node**
 ```bash
 ros2 launch mbot_bringup mbot_bringup.launch.py 

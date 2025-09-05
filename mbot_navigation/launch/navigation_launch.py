@@ -34,6 +34,7 @@ def generate_launch_description():
             launch_arguments={
                 'map_name': LaunchConfiguration('map_name'),
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'launch_rviz': 'false',
             }.items()
         ),
 
@@ -109,5 +110,15 @@ def generate_launch_description():
                             'waypoint_follower'
                         ]}
             ]
+        ),
+
+        # 9. RViz2 with navigation configuration
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', rviz_config_file],
+            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
+            output='screen'
         ),
     ])
