@@ -65,16 +65,7 @@ def generate_launch_description():
             parameters=[nav2_params_file],
         ),
         
-        # 5. Smoother Server
-        Node(
-            package='nav2_smoother',
-            executable='smoother_server',
-            name='smoother_server',
-            output='screen',
-            parameters=[nav2_params_file]
-        ),
-
-        # 6. Waypoint Follower
+        # 5. Waypoint Follower
         Node(
             package='nav2_waypoint_follower',
             executable='waypoint_follower',
@@ -83,7 +74,7 @@ def generate_launch_description():
             parameters=[nav2_params_file],
         ),
         
-        # 7. BT Navigator
+        # 6. BT Navigator
         Node(
             package='nav2_bt_navigator',
             executable='bt_navigator',
@@ -92,7 +83,7 @@ def generate_launch_description():
             parameters=[nav2_params_file],
         ),
 
-        # 8. Lifecycle Manager to manage the Nav2 servers
+        # 7. Lifecycle Manager to manage the Nav2 servers
         Node(
             package='nav2_lifecycle_manager',
             executable='lifecycle_manager',
@@ -103,7 +94,6 @@ def generate_launch_description():
                         # The list of nodes to manage
                         {'node_names': [
                             'controller_server',
-                            'smoother_server',
                             'planner_server',
                             'behavior_server',
                             'bt_navigator',

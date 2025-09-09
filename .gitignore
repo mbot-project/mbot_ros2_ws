@@ -52,3 +52,4 @@ CATKIN_IGNORE
 
 # Calibration image
 /mbot_vision/calibration/*.png
+/mbot_vision/calibration/ost*
