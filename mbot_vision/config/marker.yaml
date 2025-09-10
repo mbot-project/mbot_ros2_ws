@@ -1,0 +1,39 @@
+marker:
+  # Object pose in world coordinates (meters)
+  pose:
+    x: 0.5   
+    y: 0.2
+    z: 0.07    
+  
+  # Object size (meters)
+  size:
+    x: 0.1   
+    y: 0.1
+    z: 0.1
+  
+  # Marker type (CUBE, SPHERE, CYLINDER, etc.)
+  type: "CUBE"
+  
+  # Color (RGBA values 0.0-1.0)
+  color:
+    r: 1.0    # Red
+    g: 0.0
+    b: 0.0
+    a: 0.8    # Semi-transparent
+
+# Alternative configurations for different test objects
+# Uncomment and modify as needed:
+
+# marker:
+#   # Larger box for testing
+#   pose: {x: 0.3, y: 0.2, z: 0.05}
+#   size: {x: 0.15, y: 0.15, z: 0.1}
+#   type: "CUBE"
+#   color: {r: 0.0, g: 1.0, b: 0.0, a: 0.8}
+
+# marker:
+#   # Sphere for testing
+#   pose: {x: 0.4, y: -0.1, z: 0.08}
+#   size: {x: 0.08, y: 0.08, z: 0.08}
+#   type: "SPHERE" 
+#   color: {r: 0.0, g: 0.0, b: 1.0, a: 0.8}

@@ -24,6 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'calibration_marker = mbot_vision.calibration_marker:main',
         ],
     },
 )
