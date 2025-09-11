@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'calibration_marker = mbot_vision.calibration_marker:main',
+            'apriltag_photo_capture = mbot_vision.apriltag_photo_capture:main',
         ],
     },
 )
