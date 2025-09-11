@@ -17,7 +17,7 @@ Run teleop node to drive robot to explore the area
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
-## Save map
+### Save map
 ```bash
 cd ~/mbot_ws/src/mbot_navigation/maps
 ros2 run nav2_map_server map_saver_cli -f my_map_name
@@ -27,6 +27,7 @@ ros2 run nav2_map_server map_saver_cli -f my_map_name
 ```bash
 cd ~/mbot_ws
 colcon build
+source install/setup.bash 
 ```
 - Remember to compile all the packages so the map become available anywhere.
 - **Changes to the config files also require re-compile.**
@@ -74,3 +75,25 @@ After the robot is localized, you can give it a navigation goal.
 - Click the "2D Goal Pose" button in the RViz toolbar.
 - Click on a destination on the map and drag an arrow to specify the desired final orientation.
 - When you release the mouse button, the robot will begin planning a path and navigating to the goal, avoiding obstacles along the way.
+
+## Exploration
+```bash
+ros2 launch mbot_bringup mbot_bringup.launch.py 
+```
+```bash
+ros2 launch mbot_navigation slam_exploration_launch.py
+```
+### Save map
+```bash
+cd ~/mbot_ws/src/mbot_navigation/maps
+ros2 run nav2_map_server map_saver_cli -f my_map_name
+```
+- Don't include any file extension.
+- Always save it under `/maps` folder!!! Or you cannot use proviced launch files later.
+```bash
+cd ~/mbot_ws
+colcon build
+source install/setup.bash 
+```
+- Remember to compile all the packages so the map become available anywhere.
+- **Changes to the config files also require re-compile.**

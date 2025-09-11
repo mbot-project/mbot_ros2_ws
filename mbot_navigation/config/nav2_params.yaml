@@ -31,7 +31,7 @@ amcl:
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
     save_pose_rate: -1.0
     tf_broadcast: true
-    transform_tolerance: 0.2
+    transform_tolerance: 0.3
     update_min_a: 0.06   # minimal angle before performing a filter update
     update_min_d: 0.04   # minimal distance before performing a filter update
     sigma_hit: 0.1       # margin of error in meters
@@ -163,7 +163,7 @@ controller_server:
       slowdown_radius: 0.5
       
       # Misc
-      transform_tolerance: 0.1
+      transform_tolerance: 0.2
       max_robot_pose_search_dist: 1.0
 
 # Behavior Tree Navigator
