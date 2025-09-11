@@ -63,6 +63,7 @@ ros2 run rqt_image_view rqt_image_view
     ```bash
     cd ~/mbot_ws
     colcon build
+    source install/setup.bash
     ```
 
 ## Launch

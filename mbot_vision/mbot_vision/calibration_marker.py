@@ -15,7 +15,7 @@ class CalibrationMarkerPublisher(Node):
         # Declare parameters
         self.declare_parameter('marker_config_file', 'marker.yaml')
         self.declare_parameter('camera_frame', 'camera')
-        self.declare_parameter('marker_frame', 'base_footprint')
+        self.declare_parameter('marker_frame', 'camera')
         
         # Get parameters
         marker_config_file = self.get_parameter('marker_config_file').get_parameter_value().string_value
