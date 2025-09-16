@@ -81,11 +81,11 @@ def generate_launch_description():
             ]
         ),
 
-        # Simple Explorer Node
+        # Frontier Explorer Node
         Node(
             package='mbot_navigation',
-            executable='simple_explorer.py',
-            name='simple_explorer',
+            executable='frontier_explorer.py',
+            name='frontier_explorer',
             output='screen',
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
         ),

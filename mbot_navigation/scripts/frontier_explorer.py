@@ -12,9 +12,9 @@ import math
 from tf2_ros import Buffer, TransformListener
 from tf2_ros import TransformException
 
-class SimpleExplorer(Node):
+class FrontierExplorer(Node):
     def __init__(self):
-        super().__init__('simple_explorer')
+        super().__init__('frontier_explorer')
         
         # Subscribe to map (from SLAM)
         self.costmap_sub = self.create_subscription(
@@ -31,17 +31,17 @@ class SimpleExplorer(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
         
-        # Simple state
+        # Frontier exploration state
         self.costmap = None
         self.exploring = False
-        self.min_frontier_distance = 0.3  # Minimum distance to frontiers in meters
-        self.frontier_cluster_distance = 0.2  # Distance to cluster frontiers
-        self.goal_clearance = 0.15  # Required clearance around goals in meters (robot_radius + small margin)
-        
-        self.get_logger().info("Simple Explorer started!")
-        
-        # Start exploration after 3 seconds
-        self.create_timer(3.0, self.start_exploration)
+        self.min_frontier_distance = 0.15  # Minimum distance to frontiers in meters
+        self.frontier_cluster_distance = 0.15  # Distance to cluster frontiers
+        self.goal_clearance = 0.1  # Required clearance around goals in meters (robot_radius + small margin)
+
+        self.get_logger().info("Frontier Explorer started!")
+
+        # Start exploration after 5 seconds
+        self.create_timer(5.0, self.start_exploration)
     
     def costmap_callback(self, msg):
         self.costmap = msg
@@ -108,10 +108,12 @@ class SimpleExplorer(Node):
             for x in range(1, width-1):
                 # Check if current cell is free
                 if data[y, x] == 0:  # free space
-                    # Check if any neighbor is unknown
+                    # Check if any neighbor is unknown (8-directional)
                     neighbors = [
                         data[y-1, x], data[y+1, x], 
-                        data[y, x-1], data[y, x+1]
+                        data[y, x-1], data[y, x+1],
+                        data[y-1, x-1], data[y-1, x+1],
+                        data[y+1, x-1], data[y+1, x+1]
                     ]
                     if any(n == -1 for n in neighbors):  # -1 = unknown in ROS
                         # Convert grid to world coordinates
@@ -208,12 +210,21 @@ class SimpleExplorer(Node):
             self.get_logger().error("Navigation server not available")
             return
             
+        # Get current robot position for approach angle calculation
+        robot_x, robot_y = self.get_robot_position()
+        
+        # Calculate approach angle (direction from robot to goal)
+        approach_angle = math.atan2(y - robot_y, x - robot_x)
+        
         goal_msg = NavigateToPose.Goal()
         goal_msg.pose.header.frame_id = 'map'
         goal_msg.pose.header.stamp = self.get_clock().now().to_msg()
         goal_msg.pose.pose.position.x = x
         goal_msg.pose.pose.position.y = y
-        goal_msg.pose.pose.orientation.w = 1.0
+        
+        # Set orientation based on approach direction
+        goal_msg.pose.pose.orientation.z = math.sin(approach_angle / 2.0)
+        goal_msg.pose.pose.orientation.w = math.cos(approach_angle / 2.0)
         
         self.get_logger().info(f"Sending goal: ({x:.2f}, {y:.2f})")
         
@@ -234,15 +245,18 @@ class SimpleExplorer(Node):
     
     def goal_result_callback(self, future):
         result = future.result().result
-        status = result.result if hasattr(result, 'result') else "unknown"
-        self.get_logger().info(f'Goal completed with status: {status}')
+        status = result.result if hasattr(result, 'result') else None
         
-        # Continue exploration after a short delay
-        self.create_timer(2.0, self.explore_next)
+        if status == 1:  # SUCCEEDED
+            self.get_logger().info('Goal reached - continuing exploration')
+            self.explore_next()  # No delay for smooth exploration
+        else:
+            self.get_logger().warn(f'Navigation failed with status: {status} - trying next frontier')
+            self.explore_next()  # Try immediately on failure
 
-def main(args=None):
-    rclpy.init(args=args)
-    explorer = SimpleExplorer()
+def main():
+    rclpy.init()
+    explorer = FrontierExplorer()
     rclpy.spin(explorer)
     explorer.destroy_node()
     rclpy.shutdown()
