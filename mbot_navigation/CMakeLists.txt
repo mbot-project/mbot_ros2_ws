@@ -13,7 +13,8 @@ install(DIRECTORY config launch maps rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(PROGRAMS scripts/frontier_explorer.py
+install(PROGRAMS scripts/bruteforce_frontier_explorer.py
+                scripts/wavefront_frontier_explorer.py
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()

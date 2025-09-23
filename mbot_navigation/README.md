@@ -83,6 +83,7 @@ ros2 launch mbot_bringup mbot_bringup.launch.py
 ```bash
 ros2 launch mbot_navigation slam_exploration_launch.py
 ```
+- In the launch file `slam_exploration_launch.py`, we can switch between brute force search for frontier `bruteforce_frontier_explorer.py`, and wavefront algorithm `wavefront_frontier_explorer.py`.
 ### Save map
 ```bash
 cd ~/mbot_ws/src/mbot_navigation/maps

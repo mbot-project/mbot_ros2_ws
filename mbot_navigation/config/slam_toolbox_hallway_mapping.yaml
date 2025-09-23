@@ -1,0 +1,67 @@
+slam_toolbox:
+  ros__parameters:
+
+    # Plugin params
+    solver_plugin: solver_plugins::CeresSolver
+    ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
+    ceres_preconditioner: SCHUR_JACOBI
+    ceres_trust_strategy: LEVENBERG_MARQUARDT
+    ceres_dogleg_type: TRADITIONAL_DOGLEG
+    ceres_loss_function: Huber
+
+    # ROS Parameters
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_footprint
+    scan_topic: /scan
+    use_map_saver: true   # enables a service within the slam_toolbox node to save map
+    mode: mapping
+
+    debug_logging: false
+    throttle_scans: 3               # How many scans to process; can save CPU
+    transform_publish_period: 0.05  # How often (in seconds) to pub map -> odom
+    map_update_interval: 2.0        # How often (in seconds) to update the map
+    resolution: 0.05                # Size of each pixel or grid cell in your map, in meters
+    max_laser_range: 12.0           # Max range (in meters) from the laser scanner that will be used
+    transform_timeout: 0.5
+    tf_buffer_duration: 30.0        # how long (in seconds) to store a history of coordinate 
+    # stack_size_to_use: 40000000     # This value allocates more memory for big map
+    enable_interactive_mode: true
+
+    # General Parameters
+    use_scan_matching: true
+    use_scan_barycenter: true
+    minimum_time_interval: 0.5      # only process a new laser scan if the time has passed x seconds
+    minimum_travel_distance: 0.5    # only process a new laser scan if the robot has moved x meters
+    minimum_travel_heading: 0.2     # radian
+    scan_buffer_size: 15
+    scan_buffer_maximum_scan_distance: 12.0
+    link_match_minimum_response_fine: 0.5  # quality score for matching a new scan to the one right before it 
+    link_scan_maximum_distance: 0.5        # sanity check on odom; not expect robot move more than x meter between 2 laser scans
+    do_loop_closing: true 
+    loop_search_maximum_distance: 15.0       # search radius for finding a loop closure
+    loop_match_minimum_chain_size: 6       # chain of at least x consecutive scans match for loop closure
+    loop_match_maximum_variance_coarse: 3.0  
+    loop_match_minimum_response_coarse: 0.35    
+    loop_match_minimum_response_fine: 0.45
+
+    # for matching consecutive scans (local, high-resolution search)
+    correlation_search_space_dimension: 0.8
+    correlation_search_space_resolution: 0.005
+    correlation_search_space_smear_deviation: 0.05
+
+    # for finding loop closures (global, wide-area search)
+    loop_search_space_dimension: 8.0
+    loop_search_space_resolution: 0.05
+    loop_search_space_smear_deviation: 0.03
+
+    # Scan Matcher Parameters
+    distance_variance_penalty: 0.3      
+    angle_variance_penalty: 0.4  
+
+    coarse_search_angle_offset: 0.349  # check for matches by rotating the scan up to x rad from odom
+    coarse_angle_resolution: 0.0349    # step size for the coarse search
+    fine_search_angle_offset: 0.001745 # After the coarse search finds the best x-degree window
+    minimum_angle_penalty: 0.6
+    minimum_distance_penalty: 0.9
+    use_response_expansion: true

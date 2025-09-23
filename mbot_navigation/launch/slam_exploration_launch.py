@@ -84,7 +84,7 @@ def generate_launch_description():
         # Frontier Explorer Node
         Node(
             package='mbot_navigation',
-            executable='frontier_explorer.py',
+            executable='bruteforce_frontier_explorer.py',
             name='frontier_explorer',
             output='screen',
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]

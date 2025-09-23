@@ -17,10 +17,10 @@ class FrontierExplorer(Node):
         super().__init__('frontier_explorer')
         
         # Subscribe to map (from SLAM)
-        self.costmap_sub = self.create_subscription(
+        self.map_sub = self.create_subscription(
             OccupancyGrid, 
             '/map',
-            self.costmap_callback, 
+            self.map_callback,
             10
         )
         
@@ -31,50 +31,49 @@ class FrontierExplorer(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
         
-        # Frontier exploration state
-        self.costmap = None
-        self.exploring = False
+        # State
+        self.map = None
+        self.started = False  # start exactly once when map + TF are ready
+
         self.min_frontier_distance = 0.15  # Minimum distance to frontiers in meters
         self.frontier_cluster_distance = 0.15  # Distance to cluster frontiers
         self.goal_clearance = 0.1  # Required clearance around goals in meters (robot_radius + small margin)
 
-        self.get_logger().info("Frontier Explorer started!")
+        self.get_logger().info("Frontier Explorer ready; waiting for map and TF...")
+    
+    # ---------- Event-driven start ----------
+    def map_callback(self, msg: OccupancyGrid):
+        self.map = msg
+        if not self.started:
+            rx, ry = self.get_robot_position_world()
+            if rx is not None and ry is not None: # TF available
+                self.started = True
+                self.get_logger().info("Starting frontier exploration…")
+                self.explore_next()
 
-        # Start exploration after 5 seconds
-        self.create_timer(5.0, self.start_exploration)
-    
-    def costmap_callback(self, msg):
-        self.costmap = msg
-        
-    def start_exploration(self):
-        self.get_logger().info(f"start_exploration called - exploring: {self.exploring}, costmap available: {self.costmap is not None}")
-        if not self.exploring and self.costmap is not None:
-            self.exploring = True
-            self.get_logger().info("Starting exploration...")
-            self.explore_next()
-        elif self.exploring:
-            self.get_logger().info("Already exploring")
-        else:
-            self.get_logger().warn("No costmap available yet")
-    
+    # ---------- Main loop ----------
     def explore_next(self):
-        if self.costmap is None:
-            self.get_logger().warn("No costmap available")
+        if self.map is None:
+            self.started = False
             return
-            
+        
         # Find frontiers
         frontiers = self.find_frontiers()
         
         if not frontiers:
             self.get_logger().info("Exploration complete - no more frontiers!")
-            self.exploring = False
             return
-            
+            # TODO
         # Cluster frontiers to reduce redundancy
         clustered_frontiers = self.cluster_frontiers(frontiers)
         
         # Filter frontiers by minimum distance and clearance
-        robot_x, robot_y = self.get_robot_position()
+        robot_x, robot_y = self.get_robot_position_world()
+        if robot_x is None or robot_y is None:
+            self.get_logger().warn("TF unavailable; will retry on next map update.")
+            self.started = False
+            return
+        
         valid_frontiers = []
         for f in clustered_frontiers:
             distance = math.sqrt((f[0]-robot_x)**2 + (f[1]-robot_y)**2)
@@ -83,7 +82,6 @@ class FrontierExplorer(Node):
         
         if not valid_frontiers:
             self.get_logger().warn(f"No frontiers with sufficient distance ({self.min_frontier_distance}m) and clearance ({self.goal_clearance}m) found!")
-            self.exploring = False
             return
             
         # Pick closest valid frontier
@@ -99,8 +97,8 @@ class FrontierExplorer(Node):
         frontiers = []
         
         # Convert to numpy array for easier processing
-        data = np.array(self.costmap.data).reshape(
-            (self.costmap.info.height, self.costmap.info.width))
+        data = np.array(self.map.data).reshape(
+            (self.map.info.height, self.map.info.width))
         
         height, width = data.shape
         
@@ -117,8 +115,8 @@ class FrontierExplorer(Node):
                     ]
                     if any(n == -1 for n in neighbors):  # -1 = unknown in ROS
                         # Convert grid to world coordinates
-                        world_x = x * self.costmap.info.resolution + self.costmap.info.origin.position.x
-                        world_y = y * self.costmap.info.resolution + self.costmap.info.origin.position.y
+                        world_x = x * self.map.info.resolution + self.map.info.origin.position.x
+                        world_y = y * self.map.info.resolution + self.map.info.origin.position.y
                         frontiers.append((world_x, world_y))
         
         self.get_logger().info(f"Found {len(frontiers)} frontiers")
@@ -160,24 +158,22 @@ class FrontierExplorer(Node):
     
     def has_clearance(self, x, y):
         """Check if a position has sufficient clearance from obstacles"""
-        if self.costmap is None:
-            return False
-            
+
         # Convert world coordinates to grid coordinates
-        grid_x = int((x - self.costmap.info.origin.position.x) / self.costmap.info.resolution)
-        grid_y = int((y - self.costmap.info.origin.position.y) / self.costmap.info.resolution)
+        grid_x = int((x - self.map.info.origin.position.x) / self.map.info.resolution)
+        grid_y = int((y - self.map.info.origin.position.y) / self.map.info.resolution)
         
         # Calculate clearance radius in grid cells
-        clearance_cells = int(self.goal_clearance / self.costmap.info.resolution)
+        clearance_cells = int(self.goal_clearance / self.map.info.resolution)
         
         # Check bounds
-        if (grid_x < clearance_cells or grid_x >= self.costmap.info.width - clearance_cells or
-            grid_y < clearance_cells or grid_y >= self.costmap.info.height - clearance_cells):
+        if (grid_x < clearance_cells or grid_x >= self.map.info.width - clearance_cells or
+            grid_y < clearance_cells or grid_y >= self.map.info.height - clearance_cells):
             return False
         
         # Convert to numpy array for easier processing
-        data = np.array(self.costmap.data).reshape(
-            (self.costmap.info.height, self.costmap.info.width))
+        data = np.array(self.map.data).reshape(
+            (self.map.info.height, self.map.info.width))
         
         # Check area around the position - only reject actual obstacles (100)
         # Allow unknown (-1) areas to encourage exploration
@@ -190,7 +186,8 @@ class FrontierExplorer(Node):
         
         return True
     
-    def get_robot_position(self):
+    # ---------- Pose helpers ----------
+    def get_robot_position_world(self):
         """Get robot position from TF"""
         try:
             # Get transform from map to base_footprint
@@ -202,8 +199,9 @@ class FrontierExplorer(Node):
             return (x, y)
         except TransformException as ex:
             self.get_logger().warn(f"Could not get robot position: {ex}")
-            return (0.0, 0.0)  # Fallback to origin
-    
+            return (None, None)  
+        
+    # ---------- Nav2 ----------
     def send_goal(self, x, y):
         """Send navigation goal"""
         if not self.nav_client.wait_for_server(timeout_sec=5.0):
@@ -211,10 +209,12 @@ class FrontierExplorer(Node):
             return
             
         # Get current robot position for approach angle calculation
-        robot_x, robot_y = self.get_robot_position()
-        
-        # Calculate approach angle (direction from robot to goal)
-        approach_angle = math.atan2(y - robot_y, x - robot_x)
+        robot_x, robot_y = self.get_robot_position_world()
+        if robot_x is None or robot_y is None:
+            approach_angle = 0.0  # Default angle if TF fails
+        else:
+            # Calculate approach angle (direction from robot to goal)
+            approach_angle = math.atan2(y - robot_y, x - robot_x)
         
         goal_msg = NavigateToPose.Goal()
         goal_msg.pose.header.frame_id = 'map'
