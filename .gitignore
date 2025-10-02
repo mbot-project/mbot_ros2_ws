@@ -56,3 +56,6 @@ CATKIN_IGNORE
 
 # captured photo
 /mbot_vision/media/*.jpg
+
+# log files
+/mbot_tools/data/*.csv

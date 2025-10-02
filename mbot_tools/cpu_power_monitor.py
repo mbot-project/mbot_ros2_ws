@@ -144,6 +144,6 @@ def monitor_system(interval=1.0, log_file=None):
             log.close()
 
 if __name__ == "__main__":
-    log_filename = f"power_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    log_filename = f"data/power_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     print(f"Logging to: {log_filename}")
     monitor_system(interval=0.5, log_file=log_filename)
