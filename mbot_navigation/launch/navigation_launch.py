@@ -10,7 +10,6 @@ def generate_launch_description():
     # -----  File Paths -----
     pkg_share = get_package_share_directory('mbot_navigation')
     nav2_params_file = os.path.join(pkg_share, 'config', 'nav2_params.yaml')
-    rviz_config_file = os.path.join(pkg_share, 'rviz', 'navigation.rviz')
 
     return LaunchDescription([
         # -----  Launch Arguments -----
@@ -34,7 +33,6 @@ def generate_launch_description():
             launch_arguments={
                 'map_name': LaunchConfiguration('map_name'),
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
-                'launch_rviz': 'false',
             }.items()
         ),
 
@@ -100,15 +98,5 @@ def generate_launch_description():
                             'waypoint_follower'
                         ]}
             ]
-        ),
-
-        # 9. RViz2 with navigation configuration
-        Node(
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            arguments=['-d', rviz_config_file],
-            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
-            output='screen'
         ),
     ])

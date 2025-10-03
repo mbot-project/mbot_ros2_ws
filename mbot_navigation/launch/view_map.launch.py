@@ -18,13 +18,6 @@ def generate_launch_description():
         'maps',
         [LaunchConfiguration('map_name'), '.yaml']
     ])
-    
-    # Path to RViz config file
-    rviz_config_path = os.path.join(
-        get_package_share_directory('mbot_navigation'),
-        'rviz',
-        'view_map.rviz'
-    )
 
     # Node for the map server
     map_server_node = Node(
@@ -45,20 +38,9 @@ def generate_launch_description():
             parameters=[{'autostart': True},
                         {'node_names': ['map_server']}]
     )
-    
-
-    # RViz node
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        arguments=['-d', rviz_config_path],
-        output='screen'
-    )
 
     return LaunchDescription([
         map_name_arg,
         map_server_node,
         lifecycle_manager_node,
-        rviz_node,
     ])
