@@ -1,7 +1,7 @@
 # mbot_navigation
 This package provides **mapping**, **localization**, and **Nav2 navigation** for the MBot platform using `slam_toolbox` and `nav2_bringup`.
 
-**IMPORTANT!!!** - We marked how to use the terminals, it is not mandatory, but for the best performance, **only use NoMachine for visualiztion, nothing else.**
+**IMPORTANT!!!** - We marked how to use the terminals, it is not mandatory, but for the best performance, **only use NoMachine for visualiztion node (rqt, rviz), nothing else.**
 
 ## Teleop mapping
 **VSCode Terminal #1**: launch the robot model, TF, LiDAR node.
@@ -154,3 +154,18 @@ After the robot is localized, you can give it a navigation goal.
 - Click the "2D Goal Pose" button in the RViz toolbar.
 - Click on a destination on the map and drag an arrow to specify the desired final orientation.
 - When you release the mouse button, the robot will begin planning a path and navigating to the goal, avoiding obstacles along the way.
+
+
+---
+
+## Optional - foxglove
+Use foxglove will significantly offload the Pi5 CPU usage due to NoMachine use.
+```bash
+# install
+sudo apt install ros-$ROS_DISTRO-foxglove-bridge
+```
+
+```bash
+# run bridge node
+ros2 launch foxglove_bridge foxglove_bridge_launch.xml
+```
