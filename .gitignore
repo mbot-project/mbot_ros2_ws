@@ -52,3 +52,10 @@ CATKIN_IGNORE
 
 # Calibration image
 /mbot_vision/calibration/*.png
+/mbot_vision/calibrationdata.tar.gz
+
+# captured photo
+/mbot_vision/media/*.jpg
+
+# log files
+/mbot_tools/data/*.csv

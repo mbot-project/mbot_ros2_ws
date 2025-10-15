@@ -11,14 +11,10 @@ def generate_launch_description():
     pkg_share = get_package_share_directory('mbot_navigation')
     # Path to the AMCL parameters file
     nav2_params_file = os.path.join(pkg_share, 'config', 'nav2_params.yaml')
-    # Path to the RViz2 configuration file
-    rviz_config_file = os.path.join(pkg_share, 'rviz', 'localization.rviz')
 
     # -----  Launch Arguments -----
     # use_sim_time is false for a real robot
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    # launch_rviz controls whether to start RViz or not
-    launch_rviz = LaunchConfiguration('launch_rviz', default='true')
     # Path to map file
     map_file = PathJoinSubstitution([
         get_package_share_directory('mbot_navigation'),
@@ -36,11 +32,6 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'map_name',
             description='Name of the map file (without .yaml extension) - REQUIRED'),
-
-        DeclareLaunchArgument(
-            'launch_rviz',
-            default_value='true',
-            description='Whether to launch RViz'),
 
         # -----  Nodes -----
         # 1. Map Server
@@ -75,15 +66,4 @@ def generate_launch_description():
                         # The list of nodes to manage
                         {'node_names': ['map_server', 'amcl']}]
         ),
-        
-        # 4. RViz2 (conditional)
-        Node(
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            arguments=['-d', rviz_config_file],
-            parameters=[{'use_sim_time': use_sim_time}],
-            output='screen',
-            condition=IfCondition(launch_rviz)
-        )
     ])

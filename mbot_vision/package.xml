@@ -15,6 +15,9 @@
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>image_proc</exec_depend>
   <exec_depend>apriltag_ros</exec_depend>
+  <exec_depend>apriltag_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>opencv2</exec_depend>
   <exec_depend>image_transport</exec_depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>camera_ros</exec_depend>

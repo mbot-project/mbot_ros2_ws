@@ -5,3 +5,5 @@ camera:
     height: 480
     format: "BGR888"
     camera_info_url: "package://mbot_vision/calibration/ost.yaml"
+    FrameDurationLimits: [100000,100000] # 10 FPS; [min_duration, max_duration]
+    #FPS = 1,000,000 / frame_duration_in_microseconds
